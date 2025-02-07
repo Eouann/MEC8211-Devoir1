@@ -1,33 +1,21 @@
 #############################
 #Importation de bibliothèques
 #############################
-import sympy as sp
 import numpy as np
 import matplotlib.pyplot as plt
+import config
+import functions
 
 
-###########################
-# Définition des constantes
-###########################
-Ntot = 5          # nombre de point pour la méthodes des différences finies
-Deff = 10e-10     # en m^2/s
-Ce = 20           # en mol/m^3
-D = 1             # en m
-R = D/2           # en m
-S = 2e-8          # en mol/m^3/s
-
-
-######################################
-# Définition de la fonction analytique
-######################################
-r = sp.symbols('r')
-C = sp.Function('C')
-C_r = 0.25*S/Deff*R**2*(r**2/R**2 - 1) + Ce
-
-# Transformation de la fonction analytique sympy en fonction traçable par matplotlib
-C_analytique = sp.lambdify(r, C_r, modules=['numpy'])
-x_values = np.linspace(0, R, 500)
-y_values = C_analytique(x_values)
+############################
+# Importation des constantes
+############################
+Ntot = config.Ntot      # nombre de point pour la méthodes des différences finies
+Deff = config.Deff      # en m^2/s
+Ce = config.Ce          # en mol/m^3
+D = config.D            # en m
+R = config.R            # en m
+S = config.S            # en mol/m^3/s
 
 
 #####################################################
@@ -86,6 +74,8 @@ def Concentrations(a,b,c):
 
 Concentrations_CAS1=Concentrations(a1,b1,c1)
 Concentrations_CAS2=Concentrations(a2,b2,c2)
+x_values = functions.x_values
+y_values = functions.y_values
 
 # Tracé des fonctions analytiques et différences finies
 plt.figure()
