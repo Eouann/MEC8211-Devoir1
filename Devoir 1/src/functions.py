@@ -29,35 +29,37 @@ C_analytique = sp.lambdify(r, C_r, modules=['numpy'])
 x_values = np.linspace(0, R, 500)
 y_values = C_analytique(x_values)
 
-# Transformation de la fonction analytique sympy en fonction traçable par matplotlib avec Ntot points
-C_analytique = sp.lambdify(r, C_r, modules=['numpy'])
-x_Ntotvalues = np.linspace(0, R, Ntot)
-y_Ntotvalues = C_analytique(x_values)
+# Transformation de la fonction analytique sympy en fonction traçable par matplotlib avec N points
+def C_analytique_N(N):
+    C_analytique = sp.lambdify(r, C_r, modules=['numpy'])
+    x_Nvalues = np.linspace(0, R, N)
+    y_Nvalues = C_analytique(x_values)
+    return x_Nvalues,y_Nvalues
 
 
 #####################################################
 # Calcul des coefficients pour Ntot points CAS 1 et 2
 #####################################################
-def Coefficients(Ntot):
-    delta_r=R/(Ntot-1)
-    r_i=np.zeros(Ntot)          # Vecteur des N points r_i également espacées
+def Coefficients(N):
+    delta_r=R/(N-1)
+    r_i=np.zeros(N)          # Vecteur des N points r_i également espacées
     for i in range(len(r_i)):
         r_i[i] = delta_r*i
 
     # Calcul des coefficients devant les Ci+1, Ci et Ci-1
     # CAS 1
-    a1=np.zeros(Ntot)       # Coefficient devant Ci+1
-    b1=np.zeros(Ntot)       # Coefficient devant Ci
-    c1=np.zeros(Ntot)       # Coefficient devant Ci-1
+    a1=np.zeros(N)       # Coefficient devant Ci+1
+    b1=np.zeros(N)       # Coefficient devant Ci
+    c1=np.zeros(N)       # Coefficient devant Ci-1
     for i in range(1,len(r_i)):
         a1[i]=1/delta_r**2+1/(r_i[i]*delta_r)
         b1[i]=-(2/delta_r**2+1/(r_i[i]*delta_r))
         c1[i]=1/delta_r**2
 
     # CAS 2
-    a2=np.zeros(Ntot)       # Coefficient devant Ci+1
-    b2=np.zeros(Ntot)       # Coefficient devant Ci
-    c2=np.zeros(Ntot)       # Coefficient devant Ci-1
+    a2=np.zeros(N)       # Coefficient devant Ci+1
+    b2=np.zeros(N)       # Coefficient devant Ci
+    c2=np.zeros(N)       # Coefficient devant Ci-1
     for i in range(1,len(r_i)):
         a2[i]=1/delta_r**2+1/(r_i[i]*2*delta_r)
         b2[i]=-2/delta_r**2
@@ -68,11 +70,11 @@ def Coefficients(Ntot):
 ###########################################
 # Calcul des cncentrations pour Ntot points
 ###########################################
-def Concentrations(a,b,c):
+def Concentrations(a,b,c,N):
     # Fonction de calcul des N concentrations en différences finies
-    C_i = np.zeros(Ntot)
-    matA = np.zeros((Ntot,Ntot))
-    vectB = np.zeros(Ntot)
+    C_i = np.zeros(N)
+    matA = np.zeros((N,N))
+    vectB = np.zeros(N)
 
     # Condition de Neumann à i = 0
     matA[0,0] = 1

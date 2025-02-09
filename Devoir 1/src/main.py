@@ -24,8 +24,8 @@ a1,b1,c1,a2,b2,c2,r_i,delta_r = functions.Coefficients(Ntot)
 
 
 # Calcul des concentrations pour les deux cas et pour le cas analytique
-Concentrations_CAS1=functions.Concentrations(a1,b1,c1)
-Concentrations_CAS2=functions.Concentrations(a2,b2,c2)
+Concentrations_CAS1=functions.Concentrations(a1,b1,c1,Ntot)
+Concentrations_CAS2=functions.Concentrations(a2,b2,c2,Ntot)
 x_values = functions.x_values
 y_values = functions.y_values
 
@@ -51,15 +51,14 @@ vectLinf = []
 for N in range(10, 1010, 100):
     a1,b1,c1,a2,b2,c2,r_i,delta_r = functions.Coefficients(N)
     vectDelta_r.append(delta_r)
-    Concentrations_CAS1=functions.Concentrations(a1,b1,c1)
-    L1=errors.ErreurL1(Concentrations_CAS1,functions.x_Ntotvalues)
+    Concentrations_CAS1=functions.Concentrations(a1,b1,c1,N)
+    x_Nvalues,y_Nvalues=functions.C_analytique_N(N)
+    L1=errors.ErreurL1(Concentrations_CAS1,x_Nvalues)
     vectL1.append(L1)
-    L2=errors.ErreurL2(Concentrations_CAS1,functions.x_Ntotvalues)
+    L2=errors.ErreurL2(Concentrations_CAS1,x_Nvalues)
     vectL2.append(L2)
-    Linf=errors.ErreurLinf(Concentrations_CAS1,functions.x_Ntotvalues)
+    Linf=errors.ErreurLinf(Concentrations_CAS1,x_Nvalues)
     vectLinf.append(Linf)
-
-
 
 plt.figure()
 plt.plot(vectDelta_r, vectL1, 'o', color='red', label='L1')
