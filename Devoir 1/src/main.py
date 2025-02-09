@@ -40,6 +40,7 @@ plt.xlabel('r (m)')
 plt.ylabel('Concentration (mol/m^3)')
 plt.grid()
 plt.legend()
+plt.savefig("Devoir 1/results/fonctions.png")
 plt.show()
 
 # Tracé des erreurs L1, L2 et Linf CAS1
@@ -48,26 +49,27 @@ vectL1 = []
 vectL2 = []
 vectLinf = []
 
-for N in range(10, 1010, 100):
+for N in range(10, 1000, 100):
     a1,b1,c1,a2,b2,c2,r_i,delta_r = functions.Coefficients(N)
     vectDelta_r.append(delta_r)
     Concentrations_CAS1=functions.Concentrations(a1,b1,c1,N)
     x_Nvalues,y_Nvalues=functions.C_analytique_N(N)
-    L1=errors.ErreurL1(Concentrations_CAS1,x_Nvalues)
+    L1=errors.ErreurL1(Concentrations_CAS1,x_Nvalues,N)
     vectL1.append(L1)
-    L2=errors.ErreurL2(Concentrations_CAS1,x_Nvalues)
+    L2=errors.ErreurL2(Concentrations_CAS1,x_Nvalues,N)
     vectL2.append(L2)
-    Linf=errors.ErreurLinf(Concentrations_CAS1,x_Nvalues)
+    Linf=errors.ErreurLinf(Concentrations_CAS1,x_Nvalues,N)
     vectLinf.append(Linf)
 
 plt.figure()
 plt.plot(vectDelta_r, vectL1, 'o', color='red', label='L1')
 plt.plot(vectDelta_r, vectL2, 'o', color='green', label='L2')
-plt.plot(vectDelta_r, vectLinf, 'o', color='blue', label='Linf')
+#plt.plot(vectDelta_r, vectLinf, 'o', color='blue', label='Linf')
 plt.legend()
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('Delta r (m)')
 plt.ylabel('Erreur (mol/m^3)')
 plt.grid()
+plt.savefig("Devoir 1/results/erreurs.png")
 plt.show()
