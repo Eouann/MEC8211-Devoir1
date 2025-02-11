@@ -1,4 +1,4 @@
-# MEC8211-Devoir1
+# MEC8211-Devoirs
 
 Répertoire des devoirs du cours MEC8211 effectué à Polytechnique Montréal à la session d'hiver 2025.
 

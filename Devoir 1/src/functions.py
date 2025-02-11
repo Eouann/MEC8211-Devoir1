@@ -68,7 +68,7 @@ def Coefficients(N):
 
 
 ###########################################
-# Calcul des cncentrations pour Ntot points
+# Calcul des concentrations pour Ntot points
 ###########################################
 def Concentrations(a,b,c,N):
     # Fonction de calcul des N concentrations en différences finies
