@@ -49,7 +49,7 @@ vectL1 = []
 vectL2 = []
 vectLinf = []
 
-for N in range(1000, 9000, 1000):
+for N in range(1000, 10000, 1000):
     a1,b1,c1,a2,b2,c2,r_i,delta_r = functions.Coefficients(N)
     vectDelta_r.append(delta_r)
     Concentrations_CAS1=functions.Concentrations(a1,b1,c1,N)
@@ -63,14 +63,14 @@ for N in range(1000, 9000, 1000):
 
 plt.figure()
 plt.plot(vectDelta_r, vectL1, 'o', color='red', label='L1')
-plt.plot(vectDelta_r, vectL2, 'o', color='green', label='L2')
+#plt.plot(vectDelta_r, vectL2, 'o', color='green', label='L2')
 #plt.plot(vectDelta_r, vectLinf, 'o', color='blue', label='Linf')
 # Regression lineaire de L1
 a,b = np.polyfit(np.log(vectDelta_r), np.log(vectL1), 1)
 plt.plot(vectDelta_r, np.exp(a*np.log(vectDelta_r)+b), color='red', label='Regression L1')
 # Regression lineaire de L2
-c,d = np.polyfit(np.log(vectDelta_r), np.log(vectL2), 1)
-plt.plot(vectDelta_r, np.exp(c*np.log(vectDelta_r)+d), color='green', label='Regression L2')
+#c,d = np.polyfit(np.log(vectDelta_r), np.log(vectL2), 1)
+#plt.plot(vectDelta_r, np.exp(c*np.log(vectDelta_r)+d), color='green', label='Regression L2')
 # Regression lineaire de Linf
 #e,f = np.polyfit(np.log(vectDelta_r), np.log(vectLinf), 1)
 #plt.plot(vectDelta_r, np.exp(e*np.log(vectDelta_r)+f), label='Regression Linf')

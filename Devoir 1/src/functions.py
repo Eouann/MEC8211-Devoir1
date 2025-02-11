@@ -37,9 +37,9 @@ def C_analytique_N(N):
     return x_Nvalues,y_Nvalues
 
 
-#####################################################
-# Calcul des coefficients pour Ntot points CAS 1 et 2
-#####################################################
+##################################################
+# Calcul des coefficients pour N points CAS 1 et 2
+##################################################
 def Coefficients(N):
     delta_r=R/(N-1)
     r_i=np.zeros(N)          # Vecteur des N points r_i également espacées
