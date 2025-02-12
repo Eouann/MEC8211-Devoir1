@@ -24,8 +24,8 @@ a1,b1,c1,a2,b2,c2,r_i,delta_r = functions.Coefficients(Ntot)
 
 
 # Calcul des concentrations pour les deux cas et pour le cas analytique
-Concentrations_CAS1=functions.Concentrations(a1,b1,c1,Ntot)
-Concentrations_CAS2=functions.Concentrations(a2,b2,c2,Ntot)
+Concentrations_CAS1=functions.Concentrations(a1,b1,c1,Ntot,1)
+Concentrations_CAS2=functions.Concentrations(a2,b2,c2,Ntot,2)
 x_values = functions.x_values
 y_values = functions.y_values
 
@@ -49,10 +49,10 @@ vectL1 = []
 vectL2 = []
 vectLinf = []
 
-for N in range(1000, 10000, 1000):
+for N in range(1000, 10000, 800):
     a1,b1,c1,a2,b2,c2,r_i,delta_r = functions.Coefficients(N)
     vectDelta_r.append(delta_r)
-    Concentrations_CAS1=functions.Concentrations(a1,b1,c1,N)
+    Concentrations_CAS1=functions.Concentrations(a1,b1,c1,N,1)
     x_Nvalues,y_Nvalues=functions.C_analytique_N(N)
     L1=errors.ErreurL1(Concentrations_CAS1,x_Nvalues,N)
     vectL1.append(L1)
@@ -62,15 +62,15 @@ for N in range(1000, 10000, 1000):
     vectLinf.append(Linf)
 
 plt.figure()
-plt.plot(vectDelta_r, vectL1, 'o', color='red', label='L1')
-#plt.plot(vectDelta_r, vectL2, 'o', color='green', label='L2')
+#plt.plot(vectDelta_r, vectL1, 'o', color='red', label='L1')
+plt.plot(vectDelta_r, vectL2, 'o', color='green', label='L2')
 #plt.plot(vectDelta_r, vectLinf, 'o', color='blue', label='Linf')
 # Regression lineaire de L1
-a,b = np.polyfit(np.log(vectDelta_r), np.log(vectL1), 1)
-plt.plot(vectDelta_r, np.exp(a*np.log(vectDelta_r)+b), color='red', label='Regression L1')
+#a,b = np.polyfit(np.log(vectDelta_r[8:]), np.log(vectL1[8:]), 1)
+#plt.plot(vectDelta_r[8:], np.exp(a*np.log(vectDelta_r[8:])+b), color='red', label='Regression L1')
 # Regression lineaire de L2
-#c,d = np.polyfit(np.log(vectDelta_r), np.log(vectL2), 1)
-#plt.plot(vectDelta_r, np.exp(c*np.log(vectDelta_r)+d), color='green', label='Regression L2')
+#c,d = np.polyfit(np.log(vectDelta_r[8:]), np.log(vectL2[8:]), 1)
+#plt.plot(vectDelta_r[8:], np.exp(c*np.log(vectDelta_r[8:])+d), color='green', label='Regression L2')
 # Regression lineaire de Linf
 #e,f = np.polyfit(np.log(vectDelta_r), np.log(vectLinf), 1)
 #plt.plot(vectDelta_r, np.exp(e*np.log(vectDelta_r)+f), label='Regression Linf')

@@ -70,16 +70,22 @@ def Coefficients(N):
 ###########################################
 # Calcul des concentrations pour Ntot points
 ###########################################
-def Concentrations(a,b,c,N):
+def Concentrations(a,b,c,N,numCas):
     # Fonction de calcul des N concentrations en différences finies
     C_i = np.zeros(N)
     matA = np.zeros((N,N))
     vectB = np.zeros(N)
 
     # Condition de Neumann à i = 0
-    matA[0,0] = 1
-    matA[0,1] = -1
-    vectB[0] = 0
+    if numCas == 1:     # Cas 1
+        matA[0,0] = 1
+        matA[0,1] = -1
+        vectB[0] = 0
+    elif numCas == 2:   # Cas 2 avec la méthode de Gear
+        matA[0,0] = -3
+        matA[0,1] = 4
+        matA[0,2] = -1
+        vectB[0] = 0
 
     # Condition de Dirichlet à i = N
     matA[-1,-1] = 1
