@@ -38,20 +38,20 @@ def C_analytique_N(N):
     """Fonction de transformation de la fonction analytique sympy en fonction traçable par matplotlib avec N points"""
     C_analytique = sp.lambdify(r, C_r, modules=['numpy'])
     x_Nvalues = np.linspace(0, R, N)
-    y_Nvalues = C_analytique(x_values)
+    y_Nvalues = C_analytique(x_Nvalues)
     return x_Nvalues,y_Nvalues
 
 
-###########################################
-# Calcul des concentrations pour Ntot points
-###########################################
+#########################################
+# Calcul des concentrations pour N points
+#########################################
 def Concentrations(N,numCas):
     """Fonction de calcul des N concentrations en différences finies"""
-    C_i = np.zeros(N)
-    matA = np.zeros((N,N))
-    vectB = np.zeros(N)
-    delta_r=R/(N-1)
-    r_i=np.linspace(0, R, N)         # Vecteur des N points r_i également espacées
+    C_i = np.zeros(N)           # Vecteur des N concentrations numériques calculées C_i
+    matA = np.zeros((N,N))      # Matrice A pour la résolution du système matriciel
+    vectB = np.zeros(N)         # Vecteur B pour la résolution du système matriciel
+    delta_r=R/(N-1)             # Pas de discrétisation
+    r_i=np.linspace(0, R, N)    # Vecteur des N points r_i également espacées
 
     # Condition de Neumann à i = 0
     if numCas == 1:     # Cas 1
@@ -68,13 +68,14 @@ def Concentrations(N,numCas):
     matA[-1,-1] = 1
     vectB[-1] = C_E
 
-    # Algorithmes differences finies
+    # Algorithmes differences finies pour les deux cas
     if numCas == 1:
         for i in range(1,len(C_i)-1):
             matA[i,i-1] = 1/delta_r**2
             matA[i,i] = -(2/delta_r**2+1/(r_i[i]*delta_r))
             matA[i,i+1] = 1/delta_r**2+1/(r_i[i]*delta_r)
             vectB[i] = S/D_EFF
+
     elif numCas == 2:
         for i in range(1,len(C_i)-1):
             matA[i,i-1] = 1/delta_r**2-1/(r_i[i]*2*delta_r)
