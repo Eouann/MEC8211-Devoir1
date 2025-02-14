@@ -23,7 +23,7 @@ def ErreurL1(Ci,Ci_exact,N):
 ###################
 def ErreurL2(Ci,Ci_exact,N):
     """Fonction de calcul de l'erreur L2 discrète"""
-    normeL2 = (1/N*np.sum(np.abs(Ci-Ci_exact)**2))**0.5
+    normeL2 = np.sqrt(1/N*np.sum(np.abs(Ci-Ci_exact)**2))
     return normeL2
 
 

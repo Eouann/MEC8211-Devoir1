@@ -1,5 +1,5 @@
 """
-Fichier de calcul des fonction analytique, des coefficients et des concentrations pour les deux cas
+Fichier de calcul des fonction analytique et des concentrations avec la methode des differences finies
 """
 
 
@@ -42,45 +42,16 @@ def C_analytique_N(N):
     return x_Nvalues,y_Nvalues
 
 
-##################################################
-# Calcul des coefficients pour N points CAS 1 et 2
-##################################################
-def Coefficients(N):
-    """Fonction de calcul des coefficients devant les Ci+1, Ci et Ci-1"""
-    delta_r=R/(N-1)
-    r_i=np.zeros(N)          # Vecteur des N points r_i également espacées
-    for i in range(len(r_i)):
-        r_i[i] = delta_r*i
-
-    # Calcul des coefficients devant les Ci+1, Ci et Ci-1
-    # CAS 1
-    a1=np.zeros(N)       # Coefficient devant Ci+1
-    b1=np.zeros(N)       # Coefficient devant Ci
-    c1=np.zeros(N)       # Coefficient devant Ci-1
-    for i in range(1,len(r_i)):
-        a1[i]=1/delta_r**2+1/(r_i[i]*delta_r)
-        b1[i]=-(2/delta_r**2+1/(r_i[i]*delta_r))
-        c1[i]=1/delta_r**2
-
-    # CAS 2
-    a2=np.zeros(N)       # Coefficient devant Ci+1
-    b2=np.zeros(N)       # Coefficient devant Ci
-    c2=np.zeros(N)       # Coefficient devant Ci-1
-    for i in range(1,len(r_i)):
-        a2[i]=1/delta_r**2+1/(r_i[i]*2*delta_r)
-        b2[i]=-2/delta_r**2
-        c2[i]=1/delta_r**2-1/(r_i[i]*2*delta_r)
-    return a1,b1,c1,a2,b2,c2,r_i,delta_r
-
-
 ###########################################
 # Calcul des concentrations pour Ntot points
 ###########################################
-def Concentrations(a,b,c,N,numCas):
+def Concentrations(N,numCas):
     """Fonction de calcul des N concentrations en différences finies"""
     C_i = np.zeros(N)
     matA = np.zeros((N,N))
     vectB = np.zeros(N)
+    delta_r=R/(N-1)
+    r_i=np.linspace(0, R, N)         # Vecteur des N points r_i également espacées
 
     # Condition de Neumann à i = 0
     if numCas == 1:     # Cas 1
@@ -98,12 +69,18 @@ def Concentrations(a,b,c,N,numCas):
     vectB[-1] = C_E
 
     # Algorithmes differences finies
-    for i in range(1,len(C_i)-1):
-        matA[i,i-1] = c[i]
-        matA[i,i] = b[i]
-        matA[i,i+1] = a[i]
-
-        vectB[i] = S/D_EFF
+    if numCas == 1:
+        for i in range(1,len(C_i)-1):
+            matA[i,i-1] = 1/delta_r**2
+            matA[i,i] = -(2/delta_r**2+1/(r_i[i]*delta_r))
+            matA[i,i+1] = 1/delta_r**2+1/(r_i[i]*delta_r)
+            vectB[i] = S/D_EFF
+    elif numCas == 2:
+        for i in range(1,len(C_i)-1):
+            matA[i,i-1] = 1/delta_r**2-1/(r_i[i]*2*delta_r)
+            matA[i,i] = -2/delta_r**2
+            matA[i,i+1] = 1/delta_r**2+1/(r_i[i]*2*delta_r)
+            vectB[i] = S/D_EFF
 
     C_i = np.linalg.solve(matA,vectB)
-    return C_i
+    return C_i,delta_r,r_i
