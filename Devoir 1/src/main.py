@@ -1,3 +1,8 @@
+"""
+Fichier principal d'execution du devoir 1
+"""
+
+
 #############################
 #Importation de bibliothèques
 #############################
@@ -11,21 +16,21 @@ import errors
 ############################
 # Importation des constantes
 ############################
-Ntot = config.Ntot      # nombre de point pour la méthodes des différences finies
-Deff = config.Deff      # en m^2/s
-Ce = config.Ce          # en mol/m^3
+N_TOT = config.N_TOT    # nombre de point pour la méthodes des différences finies
+D_EFF = config.D_EFF    # en m^2/s
+C_E = config.C_E        # en mol/m^3
 D = config.D            # en m
 R = config.R            # en m
 S = config.S            # en mol/m^3/s
 
 
 # Importation des coeficients pour Ntot points CAS 1 et 2
-a1,b1,c1,a2,b2,c2,r_i,delta_r = functions.Coefficients(Ntot)
+a1,b1,c1,a2,b2,c2,r_i,delta_r = functions.Coefficients(N_TOT)
 
 
 # Calcul des concentrations pour les deux cas et pour le cas analytique
-Concentrations_CAS1=functions.Concentrations(a1,b1,c1,Ntot,1)
-Concentrations_CAS2=functions.Concentrations(a2,b2,c2,Ntot,2)
+Concentrations_CAS1=functions.Concentrations(a1,b1,c1,N_TOT,1)
+Concentrations_CAS2=functions.Concentrations(a2,b2,c2,N_TOT,2)
 x_values = functions.x_values
 y_values = functions.y_values
 
@@ -58,7 +63,7 @@ for N in range(1000, 10000, 800):
     vectL1.append(L1)
     L2=errors.ErreurL2(Concentrations_CAS1,x_Nvalues,N)
     vectL2.append(L2)
-    Linf=errors.ErreurLinf(Concentrations_CAS1,x_Nvalues,N)
+    Linf=errors.ErreurLinf(Concentrations_CAS1,x_Nvalues)
     vectLinf.append(Linf)
 
 plt.figure()

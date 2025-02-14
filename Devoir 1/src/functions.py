@@ -1,3 +1,8 @@
+"""
+Fichier de calcul des fonction analytique, des coefficients et des concentrations pour les deux cas
+"""
+
+
 #############################
 #Importation de bibliothèques
 #############################
@@ -9,9 +14,9 @@ import config
 ############################
 # Importation des constantes
 ############################
-Ntot = config.Ntot      # nombre de point pour la méthodes des différences finies
-Deff = config.Deff      # en m^2/s
-Ce = config.Ce          # en mol/m^3
+N_TOT = config.N_TOT    # nombre de point pour la méthodes des différences finies
+D_EFF = config.D_EFF    # en m^2/s
+C_E = config.C_E        # en mol/m^3
 D = config.D            # en m
 R = config.R            # en m
 S = config.S            # en mol/m^3/s
@@ -22,15 +27,15 @@ S = config.S            # en mol/m^3/s
 ######################################
 r = sp.symbols('r')
 C = sp.Function('C')
-C_r = 0.25*S/Deff*R**2*(r**2/R**2 - 1) + Ce
+C_r = 0.25*S/D_EFF*R**2*(r**2/R**2 - 1) + C_E
 
 # Transformation de la fonction analytique sympy en fonction traçable par matplotlib
 C_analytique = sp.lambdify(r, C_r, modules=['numpy'])
 x_values = np.linspace(0, R, 500)
 y_values = C_analytique(x_values)
 
-# Transformation de la fonction analytique sympy en fonction traçable par matplotlib avec N points
 def C_analytique_N(N):
+    """Fonction de transformation de la fonction analytique sympy en fonction traçable par matplotlib avec N points"""
     C_analytique = sp.lambdify(r, C_r, modules=['numpy'])
     x_Nvalues = np.linspace(0, R, N)
     y_Nvalues = C_analytique(x_values)
@@ -41,6 +46,7 @@ def C_analytique_N(N):
 # Calcul des coefficients pour N points CAS 1 et 2
 ##################################################
 def Coefficients(N):
+    """Fonction de calcul des coefficients devant les Ci+1, Ci et Ci-1"""
     delta_r=R/(N-1)
     r_i=np.zeros(N)          # Vecteur des N points r_i également espacées
     for i in range(len(r_i)):
@@ -71,7 +77,7 @@ def Coefficients(N):
 # Calcul des concentrations pour Ntot points
 ###########################################
 def Concentrations(a,b,c,N,numCas):
-    # Fonction de calcul des N concentrations en différences finies
+    """Fonction de calcul des N concentrations en différences finies"""
     C_i = np.zeros(N)
     matA = np.zeros((N,N))
     vectB = np.zeros(N)
@@ -89,7 +95,7 @@ def Concentrations(a,b,c,N,numCas):
 
     # Condition de Dirichlet à i = N
     matA[-1,-1] = 1
-    vectB[-1] = Ce
+    vectB[-1] = C_E
 
     # Algorithmes differences finies
     for i in range(1,len(C_i)-1):
@@ -97,7 +103,7 @@ def Concentrations(a,b,c,N,numCas):
         matA[i,i] = b[i]
         matA[i,i+1] = a[i]
 
-        vectB[i] = S/Deff
+        vectB[i] = S/D_EFF
 
     C_i = np.linalg.solve(matA,vectB)
     return C_i
