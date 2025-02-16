@@ -71,16 +71,16 @@ def Concentrations(N,numCas):
     # Algorithmes differences finies pour les deux cas
     if numCas == 1:
         for i in range(1,len(C_i)-1):
-            matA[i,i-1] = 1/delta_r**2
-            matA[i,i] = -(2/delta_r**2+1/(r_i[i]*delta_r))
-            matA[i,i+1] = 1/delta_r**2+1/(r_i[i]*delta_r)
+            matA[i,i-1] = 1/(delta_r**2)                          # Coeff devant C_i-1
+            matA[i,i] = -(2/(delta_r**2)+1/(r_i[i]*delta_r))      # Coeff devant C_i
+            matA[i,i+1] = 1/(delta_r**2)+1/(r_i[i]*delta_r)       # Coeff devant C_i+1
             vectB[i] = S/D_EFF
 
     elif numCas == 2:
         for i in range(1,len(C_i)-1):
-            matA[i,i-1] = 1/delta_r**2-1/(r_i[i]*2*delta_r)
-            matA[i,i] = -2/delta_r**2
-            matA[i,i+1] = 1/delta_r**2+1/(r_i[i]*2*delta_r)
+            matA[i,i-1] = 1/(delta_r**2)-1/(r_i[i]*2*delta_r)     # Coeff devant C_i-1
+            matA[i,i] = -2/(delta_r**2)                           # Coeff devant C_i
+            matA[i,i+1] = 1/(delta_r**2)+1/(r_i[i]*2*delta_r)     # Coeff devant C_i+1
             vectB[i] = S/D_EFF
 
     C_i = np.linalg.solve(matA,vectB)
