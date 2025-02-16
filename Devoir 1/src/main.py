@@ -110,14 +110,14 @@ vectLinf = np.zeros(len(listN))
 
 for i in (range(len(listN))):
     N = listN[i]
-    Concentrations_CAS1,delta_r,r_i=functions.Concentrations(N,2)
+    Concentrations_CAS2,delta_r,r_i=functions.Concentrations(N,2)
     vectDelta_r[i]=delta_r
     x_Nvalues,y_Nvalues=functions.C_analytique_N(N)
-    L1=errors.ErreurL1(Concentrations_CAS1,y_Nvalues,N)
+    L1=errors.ErreurL1(Concentrations_CAS2,y_Nvalues,N)
     vectL1[i]=L1
-    L2=errors.ErreurL2(Concentrations_CAS1,y_Nvalues,N)
+    L2=errors.ErreurL2(Concentrations_CAS2,y_Nvalues,N)
     vectL2[i]=L2
-    Linf=errors.ErreurLinf(Concentrations_CAS1,y_Nvalues)
+    Linf=errors.ErreurLinf(Concentrations_CAS2,y_Nvalues)
     vectLinf[i]=Linf
 
 plt.figure()
