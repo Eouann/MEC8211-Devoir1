@@ -1,0 +1,80 @@
+#!/usr/bin/bash
+#set -ex
+# But: ce script sert à lancer une analyse de convergence pour 
+#      un programme (donné $1) en faisant varier la valeur de delta_r
+#      ou delta_t (donnée en $2). En $3, on donne le delta qui reste constant
+#      de delta_t ou delta_r. En $4, on donne le type de variation.
+#
+# Exemple de lancement : analyse_auto main liste_de_resolutions 0.1 r
+
+
+# Vérifier le nombre d'arguments
+if [ "$#" -ne 4 ]; then
+    echo "Usage: $0 {nom_du_programme} {fichier_contenant_les_valeurs_de_delta} {valeur_constante} {type_de_variation}"
+    echo "type_de_variation: 'r' pour varier delta_r, 't' pour varier delta_t"
+    exit 1
+fi
+
+# Initialisations
+PROGRAM_FILE="$1.py"
+DELTA_FILE="$2"
+CONSTANT_VALUE="$3"
+VARIATION_TYPE="$4"
+OUTPUT_FILE="resultats_convergence.txt"
+PYTHON_SCRIPT="analyse_de_convergence.py"
+
+# Vérifier si le fichier source existe
+if [ ! -f "$PROGRAM_FILE" ]; then
+    echo "Erreur: Le fichier $PROGRAM_FILE n'existe pas."
+    exit 1
+fi
+
+# Vérifier si le fichier de valeurs de delta existe
+if [ ! -f "$DELTA_FILE" ]; then
+    echo "Erreur: Le fichier $DELTA_FILE n'existe pas."
+    exit 1
+fi
+
+# Initialiser le fichier de résultats
+echo "Analyse de convergence:" > "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+
+# Boucle sur les valeurs de delta
+while IFS= read -r DELTA; do
+    if [ "$VARIATION_TYPE" == "r" ]; then
+        DELTA_R="$DELTA"
+        DELTA_T="$CONSTANT_VALUE"
+        echo "Calcul pour DELTA_R = $DELTA_R et DELTA_T constant = $DELTA_T..."
+    elif [ "$VARIATION_TYPE" == "t" ]; then
+        DELTA_R="$CONSTANT_VALUE"
+        DELTA_T="$DELTA"
+        echo "Calcul pour DELTA_R constant = $DELTA_R et DELTA_T = $DELTA_T..."
+    else
+        echo "Type de variation non valide. Utilisez 'r' ou 't'."
+        exit 1
+    fi
+
+    # Créer un répertoire pour cette simulation
+    SIM_DIR="simulation_delta_r_${DELTA_R}_delta_t_${DELTA_T}"
+    mkdir -p "$SIM_DIR"
+
+    # Remplacer les valeurs de DELTA_R et DELTA_T dans le fichier source
+    sed -e "s/YYYY/$DELTA_R/" -e "s/ZZZZ/$DELTA_T/" "$PROGRAM_FILE" > "$SIM_DIR/$PROGRAM_FILE"
+
+    # Exécuter le script Python
+    python3 "$SIM_DIR/$PROGRAM_FILE" >> "$OUTPUT_FILE"
+
+    # Nettoyer les fichiers temporaires
+    rm -f "$SIM_DIR/$PROGRAM_FILE"
+    rmdir "$SIM_DIR"
+
+    echo "Done!"
+done < "$DELTA_FILE"
+
+# Exécuter le script Python pour tracer l'analyse de convergence
+echo "Exécution du script Python..."
+python3 "$PYTHON_SCRIPT" "$OUTPUT_FILE"
+
+echo "Analyse de convergence terminée."
+
+exit
