@@ -1,41 +1,23 @@
 """
 Fichier de calcul des fonction analytique et des concentrations avec la methode des differences finies
 """
-"""
-import sympy as sp
-import numpy as np
-import matplotlib.pyplot as plt
-import config2
 
-###########################
-# Définition des constantes
-###########################
-N_spatial = config2.N_Spatial    # nombre de points pour la méthode des différences finies
-N_Temporel = config2.N_Temporel 
-D_EFF = config2.D_EFF        # en m^2/s
-C_E = config2.C_E            # en mol/m^3
-D = config2.D             # en m
-R = config2.R            # en m
-S = config2.S             # en mol/m^3/s
-Tf = config2.Tf        # Temps caractéristique
-k = config2.k            # Coefficient de réaction
-"""
 import sympy as sp
 import numpy as np
 import matplotlib.pyplot as plt
-import config2
+import config
 ###########################
 # Définition des constantes
 ###########################
-N_spatial = config2.N_Spatial    # nombre de points pour la méthode des différences finies
-N_Temporel = config2.N_Temporel 
-D_EFF = config2.D_EFF        # en m^2/s
-C_E = config2.C_E            # en mol/m^3
-D = config2.D             # en m
-R = config2.R            # en m
-S = config2.S             # en mol/m^3/s
-Tf = config2.Tf        # Temps caractéristique
-k = config2.k            # Coefficient de réaction
+N_spatial = config.N_Spatial    # nombre de points pour la méthode des différences finies
+N_Temporel = config.N_Temporel 
+D_EFF = config.D_EFF        # en m^2/s
+C_E = config.C_E            # en mol/m^3
+D = config.D             # en m
+R = config.R            # en m
+S = config.S             # en mol/m^3/s
+Tf = config.Tf        # Temps caractéristique
+k = config.k            # Coefficient de réaction
 
 # Définition des symboles
 r, t = sp.symbols('r t')

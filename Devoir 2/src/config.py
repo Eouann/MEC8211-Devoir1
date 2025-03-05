@@ -6,11 +6,13 @@ Fichier de configuration des constantes
 ###########################
 # Définition des constantes
 ###########################
-N_TOT = 11        # nombre de point pour la méthodes des différences finies
-dt = 1e5          # pas de temps en s
-t_fin = 4e9       # temps final en s
-D_EFF = 1e-10     # en m^2/s
-C_E = 20          # en mol/m^3
-D = 1             # en m
-R = D/2           # en m
-k = 4e-9          # s^-1
+   
+N_Spatial = 11     # nombre de points pour la méthode des différences finies
+N_Temporel = 2     
+D_EFF = 1e-10         # en m^2/s
+C_E = 20              # en mol/m^3
+D = 1                 # en m
+R = D/2               # en m
+S = 2e-8              # en mol/m^3/s
+Tf = 3.74e9          # Temps caractéristique
+k = 4e-9  
