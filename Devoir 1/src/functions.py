@@ -68,6 +68,7 @@ def Concentrations(N,numCas):
     matA[-1,-1] = 1
     vectB[-1] = C_E
 
+
     # Algorithmes differences finies pour les deux cas
     if numCas == 1:
         for i in range(1,len(C_i)-1):
@@ -82,6 +83,8 @@ def Concentrations(N,numCas):
             matA[i,i] = -2/(delta_r**2)                           # Coeff devant C_i
             matA[i,i+1] = 1/(delta_r**2)+1/(r_i[i]*2*delta_r)     # Coeff devant C_i+1
             vectB[i] = S/D_EFF
+        
+    print(matA)
 
     C_i = np.linalg.solve(matA,vectB)
     return C_i,delta_r,r_i
