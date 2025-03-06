@@ -2,41 +2,41 @@
 Fichier de calcul des fonction analytique et des concentrations avec la methode des differences finies
 """
 
+
 #############################
 #Importation de bibliothèques
 #############################
-
 import sympy as sp
 import numpy as np
 import matplotlib.pyplot as plt
 import config
 
+
 ###########################
 # Définition des constantes
 ###########################
-N_spatial = config.N_Spatial    # nombre de points spatiaux utilisés
-N_Temporel = config.N_Temporel  # nombre de points temporels utilisés 
+N_spatial = config.N_Spatial    # Nombre de points spatiaux pour la méthode des différences finies
+N_Temporel = config.N_Temporel  # Nombre de points temporels pour la méthode des différences finies
 D_EFF = config.D_EFF            # en m^2/s
 C_E = config.C_E                # en mol/m^3
 D = config.D                    # en m
 R = config.R                    # en m
-S = config.S                    # en mol/m^3/s
 Tf = config.Tf                  # Temps caractéristique
 k = config.k                    # Coefficient de réaction
+
 
 ######################################
 # Définition de la fonction analytique
 ######################################
-
 r, t = sp.symbols('r t')
 
 # Définition de la solution manufacturée correcte
 C_r = C_E * (r**2 / R**2) + sp.exp(t / Tf) * (1 - r**2 / R**2)
 
+
 #########################################
 # Calcul des concentrations pour N points
 #########################################
-
 # Fonction pour calculer le terme source
 def terme_source(r,t):
     """Définition de la fon,ctopn de terme source en implicite"""
@@ -57,9 +57,10 @@ C_i = np.zeros(N_spatial)
 matA = np.zeros((N_spatial, N_spatial))
 vectB = np.zeros(N_spatial)
 
-#########################################
+
+########################
 # Conditions aux limites
-#########################################
+########################
 # Condition de Neumann à r = 0 avec Gear
 matA[0, 0] = -3
 matA[0, 1] = 4
@@ -82,7 +83,7 @@ for t in t_i:
 
     # Résolution du système matriciel A * C_new = B
     C_new = np.linalg.solve(matA, vectB)
-    C_i = C_new  # Mise à jour des concentrations pour l'itération suivante
+    C_i = C_new     # Mise à jour des concentrations pour l'itération suivante
 
 # Tracer C_i en fonction de r pour le dernier pas de temps, en affichant les points
 plt.figure(figsize=(10, 6))
