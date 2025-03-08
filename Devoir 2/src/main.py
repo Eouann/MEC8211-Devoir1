@@ -80,20 +80,17 @@ plt.show()
 ##############################################################################
 # Analyse de convergence spatiale avec delta temporel fixé à 3,1536e7 s (1 an)
 ##############################################################################
-list_delta_r=[0.25, 0.166666667, 0.125, 0.055555556, 
-              0.026315789, 0.017241379, 0.010204082, 
-              0.005050505, 0.002512563, 0.001672241, 
-              0.001002004, 0.000500501]
-delta_t = (3.1536e7)      # 1 an en s
-vectDelta_r = np.zeros(len(list_delta_r))
-vectL1 = np.zeros(len(list_delta_r))
-vectL2 = np.zeros(len(list_delta_r))
-vectLinf = np.zeros(len(list_delta_r))
+list_N_spatiaux=[3, 4, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000]
 
-for i in (range(len(list_delta_r))):
-    delta_r = list_delta_r[i]
-    N = R / delta_r + 1
-    N = int(N)
+delta_t = (3.1536e7)      # 1 an en s
+vectDelta_r = np.zeros(len(list_N_spatiaux))
+vectL1 = np.zeros(len(list_N_spatiaux))
+vectL2 = np.zeros(len(list_N_spatiaux))
+vectLinf = np.zeros(len(list_N_spatiaux))
+
+for i in (range(len(list_N_spatiaux))):
+    delta_r = R/(list_N_spatiaux[i]-1)
+    N = list_N_spatiaux[i]
     
     C_i, r_i, t_i=functions.Concentrations(delta_r, delta_t)
     y_values = C_chapeau(r_i, Tf)
@@ -140,18 +137,17 @@ plt.show()
 ##############################################################################
 # Analyse de convergence temporelle avec delta spatial fixé à 0,125 m (5 points)
 ##############################################################################
-list_delta_t=[935000000, 415555555.55555600, 128965517.24137900, 76326530.61224490,
-37777777.77777780, 12508361.20401340, 7494989.97995992, 3743743.74374374]
-delta_r = 0.125      # en m
-vectDelta_t = np.zeros(len(list_delta_t))
-vectL1 = np.zeros(len(list_delta_t))
-vectL2 = np.zeros(len(list_delta_t))
-vectLinf = np.zeros(len(list_delta_t))
+list_N_temporel=[3, 4, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000]
 
-for i in (range(len(list_delta_t))):
-    delta_t = list_delta_t[i]
-    N = Tf / delta_t + 1
-    N = int(N)
+delta_r = 0.125      # en m
+vectDelta_t = np.zeros(len(list_N_temporel))
+vectL1 = np.zeros(len(list_N_temporel))
+vectL2 = np.zeros(len(list_N_temporel))
+vectLinf = np.zeros(len(list_N_temporel))
+
+for i in (range(len(list_N_temporel))):
+    delta_t = Tf/(list_N_temporel[i]-1)
+    N = list_N_temporel[i]
     
     C_i, r_i, t_i=functions.Concentrations(delta_r, delta_t)
     y_values = C_chapeau(0.25, t_i)

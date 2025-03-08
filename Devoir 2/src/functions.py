@@ -42,9 +42,9 @@ def terme_source(r,t):
 ###########################
 def Concentrations(delta_r, delta_t):
     # Discrétisation
-    N_spatial = R / delta_r + 1
+    N_spatial = (R / delta_r) + 1
     N_spatial = int(N_spatial)
-    N_Temporel = Tf / delta_t + 1
+    N_Temporel = (Tf / delta_t) + 1
     N_Temporel = int(N_Temporel)
     r_i = np.linspace(0, R, N_spatial)
     t_i = np.linspace(0, Tf, N_Temporel)
