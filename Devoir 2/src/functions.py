@@ -15,8 +15,6 @@ import config
 ###########################
 # Définition des constantes
 ###########################
-N_spatial = config.N_Spatial    # Nombre de points spatiaux pour la méthode des différences finies
-N_Temporel = config.N_Temporel  # Nombre de points temporels pour la méthode des différences finies
 D_EFF = config.D_EFF            # en m^2/s
 C_E = config.C_E                # en mol/m^3
 D = config.D                    # en m
@@ -44,10 +42,10 @@ def Concentrations(delta_r, delta_t):
     # Discrétisation
     N_spatial = (R / delta_r) + 1
     N_spatial = int(N_spatial)
-    N_Temporel = (Tf / delta_t) + 1
-    N_Temporel = int(N_Temporel)
+    N_temporel = (Tf / delta_t) + 1
+    N_temporel = int(N_temporel)
     r_i = np.linspace(0, R, N_spatial)
-    t_i = np.linspace(0, Tf, N_Temporel)
+    t_i = np.linspace(0, Tf, N_temporel)
 
     # Initialisation des matrices et vecteurs
     C_i = np.zeros(N_spatial)
@@ -78,16 +76,3 @@ def Concentrations(delta_r, delta_t):
         C_new = np.linalg.solve(matA, vectB)
         C_i = C_new     # Mise à jour des concentrations pour l'itération suivante
     return C_i, r_i, t_i
-
-'''
-# Tracer C_i en fonction de r pour le dernier pas de temps, en affichant les points
-plt.figure(figsize=(10, 6))
-plt.scatter(r_i, C_i, label=f'Temps = {t_i[-1]:.1e} s', color='b', marker='o')
-
-plt.title("Concentration en fonction de r au dernier temps")
-plt.xlabel('r (m)')
-plt.ylabel('Concentration (mol/m^3)')
-plt.legend()
-plt.grid(True)
-plt.show()
-'''
