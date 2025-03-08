@@ -93,15 +93,18 @@ for i in (range(len(list_N_spatiaux))):
     delta_r = R/(list_N_spatiaux[i]-1)
     N_spatial = list_N_spatiaux[i]
     
-    C_i, r_i, t_i=functions.Concentrations(delta_r, delta_t)
-    y_values = C_chapeau(r_i, Tf)
+    C_i_n, r_i, t_i=functions.Concentrations(delta_r, delta_t)
+    C_spatiaux = C_i_n[-1,:]
+    C_temporels = C_i_n[:,0]
+    C_exact_spatial = C_chapeau(r_i, Tf)
+    C_exacte_temporel = C_chapeau(0, t_i)
     vectDelta_r[i]=delta_r
 
-    L1=errors.ErreurL1(C_i,y_values,N_spatial,N_temporel)
+    L1=errors.ErreurL1(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel,N_spatial,N_temporel)
     vectL1[i]=L1
-    L2=errors.ErreurL2(C_i,y_values,N_spatial,N_temporel)
+    L2=errors.ErreurL2(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel,N_spatial,N_temporel)
     vectL2[i]=L2
-    Linf=errors.ErreurLinf(C_i,y_values)
+    Linf=errors.ErreurLinf(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel)
     vectLinf[i]=Linf
 
 plt.figure()
@@ -152,15 +155,18 @@ for i in (range(len(list_N_temporel))):
     delta_t = Tf/(list_N_temporel[i]-1)
     N_temporel = list_N_temporel[i]
     
-    C_i, r_i, t_i=functions.Concentrations(delta_r, delta_t)
-    y_values = C_chapeau(0.25, t_i)
+    C_i_n, r_i, t_i=functions.Concentrations(delta_r, delta_t)
+    C_spatiaux = C_i_n[-1,:]
+    C_temporels = C_i_n[:,0]
+    C_exact_spatial = C_chapeau(r_i, Tf)
+    C_exacte_temporel = C_chapeau(0, t_i)
     vectDelta_t[i]=delta_t
 
-    L1=errors.ErreurL1(C_i[2],y_values,N_spatial,N_temporel)
+    L1=errors.ErreurL1(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel,N_spatial,N_temporel)
     vectL1[i]=L1
-    L2=errors.ErreurL2(C_i[2],y_values,N_spatial,N_temporel)
+    L2=errors.ErreurL2(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel,N_spatial,N_temporel)
     vectL2[i]=L2
-    Linf=errors.ErreurLinf(C_i[2],y_values)
+    Linf=errors.ErreurLinf(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel)
     vectLinf[i]=Linf
 
 plt.figure()

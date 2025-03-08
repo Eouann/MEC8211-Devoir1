@@ -49,6 +49,7 @@ def Concentrations(delta_r, delta_t):
 
     # Initialisation des matrices et vecteurs
     C_i = np.zeros(N_spatial)
+    C_i_n = np.zeros((N_temporel,N_spatial))
     matA = np.zeros((N_spatial, N_spatial))
     vectB = np.zeros(N_spatial)
 
@@ -68,11 +69,13 @@ def Concentrations(delta_r, delta_t):
         matA[i, i + 1] = D_EFF * (1 / delta_r**2 + 1 / (2 * r_i[i] * delta_r))
 
     # Boucle temporelle pour résoudre C_i à chaque pas de temps
-    for t in t_i:
+    for i in range(len(t_i)):
+        t=t_i[i]
         for j in range(1, N_spatial - 1):
             vectB[j] = - C_i[j] / delta_t + terme_source(r_i[j], t)
 
         # Résolution du système matriciel A * C_new = B
         C_new = np.linalg.solve(matA, vectB)
         C_i = C_new     # Mise à jour des concentrations pour l'itération suivante
-    return C_i, r_i, t_i
+        C_i_n[i] = C_i
+    return C_i_n, r_i, t_i
