@@ -78,7 +78,7 @@ plt.show()
 ##############################################################################
 # Analyse de convergence spatiale avec delta temporel fixé à 3,1536e7 s (1 an)
 ##############################################################################
-list_N_spatiaux=[3, 4, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000]
+list_N_spatiaux=[ 4, 5, 6, 7, 8, 9, 10, 20, 30, 50, 100, 200, 300]
 
 delta_t = 365*24*3600      # 1 an en s
 N_temporel = (Tf/delta_t)+1
@@ -94,38 +94,39 @@ for i in (range(len(list_N_spatiaux))):
     N_spatial = list_N_spatiaux[i]
     
     C_i_n, r_i, t_i=functions.Concentrations(delta_r, delta_t)
-    C_spatiaux = C_i_n[-1,:]
-    C_temporels = C_i_n[:,0]
-    C_exact_spatial = C_chapeau(r_i, Tf)
-    C_exacte_temporel = C_chapeau(0, t_i)
+    #C_spatiaux = C_i_n[-1,:]
+    #C_exacte = C_chapeau(r_i, Tf)
+    C_numerique = C_i_n[:,2]
+    C_exacte = C_chapeau(r_i[2], t_i)
+
     vectDelta_r[i]=delta_r
 
-    L1=errors.ErreurL1(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel,N_spatial,N_temporel)
+    L1=errors.ErreurL1(C_numerique,C_exacte,N_spatial,N_temporel)
     vectL1[i]=L1
-    L2=errors.ErreurL2(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel,N_spatial,N_temporel)
+    L2=errors.ErreurL2(C_numerique,C_exacte,N_spatial,N_temporel)
     vectL2[i]=L2
-    Linf=errors.ErreurLinf(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel)
+    Linf=errors.ErreurLinf(C_numerique,C_exacte)
     vectLinf[i]=Linf
 
 plt.figure()
 
 # L1
 plt.plot(vectDelta_r, vectL1, 'o', color='red', label='L1')
-slope_L1, intercept_L1, r_value_L1, p_value_L1, std_err_L1 = linregress(np.log(vectDelta_r[6:]), np.log(vectL1[6:]))
-y_pred_L1 =  np.exp(intercept_L1) * vectDelta_r[6:]**slope_L1
-plt.plot(vectDelta_r[6:], y_pred_L1, '--', color='red', label=f'Ordre de convergence L1: {slope_L1}')
+slope_L1, intercept_L1, r_value_L1, p_value_L1, std_err_L1 = linregress(np.log(vectDelta_r[:6]), np.log(vectL1[:6]))
+y_pred_L1 =  np.exp(intercept_L1) * vectDelta_r[:6]**slope_L1
+plt.plot(vectDelta_r[:6], y_pred_L1, '--', color='red', label=f'Ordre de convergence L1: {slope_L1}')
 
 # L2
 plt.plot(vectDelta_r, vectL2, 'o', color='green', label='L2')
-slope_L2, intercept_L2, r_value_L2, p_value_L2, std_err_L2 = linregress(np.log(vectDelta_r[6:]), np.log(vectL2[6:]))
-y_pred_L2 = np.exp(intercept_L2) * vectDelta_r[6:]**slope_L2
-plt.plot(vectDelta_r[6:], y_pred_L2, '--', color='green', label=f'Ordre de convergence L2: {slope_L2}')
+slope_L2, intercept_L2, r_value_L2, p_value_L2, std_err_L2 = linregress(np.log(vectDelta_r[:6]), np.log(vectL2[:6]))
+y_pred_L2 = np.exp(intercept_L2) * vectDelta_r[:6]**slope_L2
+plt.plot(vectDelta_r[:6], y_pred_L2, '--', color='green', label=f'Ordre de convergence L2: {slope_L2}')
 
 # Linf
 plt.plot(vectDelta_r, vectLinf, 'o', color='blue', label='Linf')
-slope_L3, intercept_L3, r_value_L3, p_value_L3, std_err_L3 = linregress(np.log(vectDelta_r[6:]), np.log(vectLinf[6:]))
-y_pred_Linf = np.exp(intercept_L3) * vectDelta_r[6:]**slope_L3
-plt.plot(vectDelta_r[6:], y_pred_Linf, '--', color='blue', label=f'Ordre de convergence Linf: {slope_L3}')
+slope_L3, intercept_L3, r_value_L3, p_value_L3, std_err_L3 = linregress(np.log(vectDelta_r[:6]), np.log(vectLinf[:6]))
+y_pred_Linf = np.exp(intercept_L3) * vectDelta_r[:6]**slope_L3
+plt.plot(vectDelta_r[:6], y_pred_Linf, '--', color='blue', label=f'Ordre de convergence Linf: {slope_L3}')
 
 plt.title('Erreurs L1, L2 et Linf en fonction du nombre de points N spatiaux')
 plt.legend()
@@ -138,10 +139,10 @@ plt.savefig('Devoir 2/results/erreurs_spatiales.png')
 plt.show()
 
 
-##############################################################################
+###############################################################################
 # Analyse de convergence temporelle avec delta spatial fixé à 0,125 m (5 points)
-##############################################################################
-list_N_temporel=[100, 200, 300, 500, 1000, 2000, 3000, 5000, 10000, 20000, 30000, 50000]
+###############################################################################
+list_N_temporel=[100, 200, 300, 500, 1000, 2000, 3000, 5000, 10000]
 
 delta_r = R/(20-1)      # en m
 N_spatial = 20
@@ -156,38 +157,39 @@ for i in (range(len(list_N_temporel))):
     N_temporel = list_N_temporel[i]
     
     C_i_n, r_i, t_i=functions.Concentrations(delta_r, delta_t)
-    C_spatiaux = C_i_n[-1,:]
-    C_temporels = C_i_n[:,0]
-    C_exact_spatial = C_chapeau(r_i, Tf)
-    C_exacte_temporel = C_chapeau(0, t_i)
+    #C_temporels = C_i_n[:,4]
+    #C_exacte = C_chapeau(r_i[4], t_i)
+    C_numerique = C_i_n[-1,:]
+    C_exacte = C_chapeau(r_i, Tf)
+
     vectDelta_t[i]=delta_t
 
-    L1=errors.ErreurL1(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel,N_spatial,N_temporel)
+    L1=errors.ErreurL1(C_numerique,C_exacte,N_spatial,N_temporel)
     vectL1[i]=L1
-    L2=errors.ErreurL2(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel,N_spatial,N_temporel)
+    L2=errors.ErreurL2(C_numerique,C_exacte,N_spatial,N_temporel)
     vectL2[i]=L2
-    Linf=errors.ErreurLinf(C_spatiaux,C_temporels,C_exact_spatial,C_exacte_temporel)
+    Linf=errors.ErreurLinf(C_numerique,C_exacte)
     vectLinf[i]=Linf
 
 plt.figure()
 
 # L1
 plt.plot(vectDelta_t, vectL1, 'o', color='red', label='L1')
-slope_L1, intercept_L1, r_value_L1, p_value_L1, std_err_L1 = linregress(np.log(vectDelta_t[:3]), np.log(vectL1[:3]))
-y_pred_L1 =  np.exp(intercept_L1) * vectDelta_t[:3]**slope_L1
-plt.plot(vectDelta_t[:3], y_pred_L1, '--', color='red', label=f'Ordre de convergence L1: {slope_L1}')
+slope_L1, intercept_L1, r_value_L1, p_value_L1, std_err_L1 = linregress(np.log(vectDelta_t[4:]), np.log(vectL1[4:]))
+y_pred_L1 =  np.exp(intercept_L1) * vectDelta_t[4:]**slope_L1
+plt.plot(vectDelta_t[4:], y_pred_L1, '--', color='red', label=f'Ordre de convergence L1: {slope_L1}')
 
 # L2
 plt.plot(vectDelta_t, vectL2, 'o', color='green', label='L2')
-slope_L2, intercept_L2, r_value_L2, p_value_L2, std_err_L2 = linregress(np.log(vectDelta_t[:3]), np.log(vectL2[:3]))
-y_pred_L2 = np.exp(intercept_L2) * vectDelta_t[:3]**slope_L2
-plt.plot(vectDelta_t[:3], y_pred_L2, '--', color='green', label=f'Ordre de convergence L2: {slope_L2}')
+slope_L2, intercept_L2, r_value_L2, p_value_L2, std_err_L2 = linregress(np.log(vectDelta_t[4:]), np.log(vectL2[4:]))
+y_pred_L2 = np.exp(intercept_L2) * vectDelta_t[4:]**slope_L2
+plt.plot(vectDelta_t[4:], y_pred_L2, '--', color='green', label=f'Ordre de convergence L2: {slope_L2}')
 
 # Linf
 plt.plot(vectDelta_t, vectLinf, 'o', color='blue', label='Linf')
-slope_L3, intercept_L3, r_value_L3, p_value_L3, std_err_L3 = linregress(np.log(vectDelta_t[:3]), np.log(vectLinf[:3]))
-y_pred_Linf = np.exp(intercept_L3) * vectDelta_t[:3]**slope_L3
-plt.plot(vectDelta_t[:3], y_pred_Linf, '--', color='blue', label=f'Ordre de convergence Linf: {slope_L3}')
+slope_L3, intercept_L3, r_value_L3, p_value_L3, std_err_L3 = linregress(np.log(vectDelta_t[4:]), np.log(vectLinf[4:]))
+y_pred_Linf = np.exp(intercept_L3) * vectDelta_t[4:]**slope_L3
+plt.plot(vectDelta_t[4:], y_pred_Linf, '--', color='blue', label=f'Ordre de convergence Linf: {slope_L3}')
 
 plt.title('Erreurs L1, L2 et Linf en fonction du nombre de points N temporels')
 plt.legend()
