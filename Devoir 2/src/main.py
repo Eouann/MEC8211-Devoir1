@@ -141,7 +141,7 @@ plt.show()
 ##############################################################################
 # Analyse de convergence temporelle avec delta spatial fixé à 0,125 m (5 points)
 ##############################################################################
-list_N_temporel=[2, 3, 4, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000]
+list_N_temporel=[100, 200, 300, 500, 1000, 2000, 3000, 5000, 10000, 20000, 30000, 50000]
 
 delta_r = R/(20-1)      # en m
 N_spatial = 20
@@ -173,21 +173,21 @@ plt.figure()
 
 # L1
 plt.plot(vectDelta_t, vectL1, 'o', color='red', label='L1')
-slope_L1, intercept_L1, r_value_L1, p_value_L1, std_err_L1 = linregress(np.log(vectDelta_t[6:]), np.log(vectL1[6:]))
-y_pred_L1 =  np.exp(intercept_L1) * vectDelta_t[6:]**slope_L1
-plt.plot(vectDelta_t[6:], y_pred_L1, '--', color='red', label=f'Ordre de convergence L1: {slope_L1}')
+slope_L1, intercept_L1, r_value_L1, p_value_L1, std_err_L1 = linregress(np.log(vectDelta_t[:3]), np.log(vectL1[:3]))
+y_pred_L1 =  np.exp(intercept_L1) * vectDelta_t[:3]**slope_L1
+plt.plot(vectDelta_t[:3], y_pred_L1, '--', color='red', label=f'Ordre de convergence L1: {slope_L1}')
 
 # L2
 plt.plot(vectDelta_t, vectL2, 'o', color='green', label='L2')
-slope_L2, intercept_L2, r_value_L2, p_value_L2, std_err_L2 = linregress(np.log(vectDelta_t[6:]), np.log(vectL2[6:]))
-y_pred_L2 = np.exp(intercept_L2) * vectDelta_t[6:]**slope_L2
-plt.plot(vectDelta_t[6:], y_pred_L2, '--', color='green', label=f'Ordre de convergence L2: {slope_L2}')
+slope_L2, intercept_L2, r_value_L2, p_value_L2, std_err_L2 = linregress(np.log(vectDelta_t[:3]), np.log(vectL2[:3]))
+y_pred_L2 = np.exp(intercept_L2) * vectDelta_t[:3]**slope_L2
+plt.plot(vectDelta_t[:3], y_pred_L2, '--', color='green', label=f'Ordre de convergence L2: {slope_L2}')
 
 # Linf
 plt.plot(vectDelta_t, vectLinf, 'o', color='blue', label='Linf')
-slope_L3, intercept_L3, r_value_L3, p_value_L3, std_err_L3 = linregress(np.log(vectDelta_t[6:]), np.log(vectLinf[6:]))
-y_pred_Linf = np.exp(intercept_L3) * vectDelta_t[6:]**slope_L3
-plt.plot(vectDelta_t[6:], y_pred_Linf, '--', color='blue', label=f'Ordre de convergence Linf: {slope_L3}')
+slope_L3, intercept_L3, r_value_L3, p_value_L3, std_err_L3 = linregress(np.log(vectDelta_t[:3]), np.log(vectLinf[:3]))
+y_pred_Linf = np.exp(intercept_L3) * vectDelta_t[:3]**slope_L3
+plt.plot(vectDelta_t[:3], y_pred_Linf, '--', color='blue', label=f'Ordre de convergence Linf: {slope_L3}')
 
 plt.title('Erreurs L1, L2 et Linf en fonction du nombre de points N temporels')
 plt.legend()
@@ -197,4 +197,24 @@ plt.xlabel('Delta t (s)')
 plt.ylabel('Erreur (mol/m^3)')
 plt.grid(True, which="both", ls="--")
 plt.savefig('Devoir 2/results/erreurs_temporels.png')
+plt.show()
+
+
+###################################################
+# Tracer de la concentration pour N=11 (question f)
+###################################################
+N_spatial = 11
+N_temporel = 100
+delta_r = R/(N_spatial-1)
+delta_t = Tf/(N_temporel-1)
+
+C_i_n, r_i, t_i=functions.Concentrations(delta_r, delta_t)
+plt.figure()
+plt.plot(r_i, C_i_n[-1,:], label='Concentration à t=4e9 s')
+plt.title("Concentration en fonction de r pour N=11")
+plt.xlabel('r (m)')
+plt.ylabel('Concentration (mol/m^3)')
+plt.legend()
+plt.grid()
+plt.savefig('Devoir 2/results/trace_question_f.png')
 plt.show()

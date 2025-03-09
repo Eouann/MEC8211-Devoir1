@@ -65,9 +65,9 @@ def Concentrations(delta_r, delta_t):
 
     # Construction de la matrice A (Coefficients de l'équation aux différences finies)
     for i in range(1, N_spatial - 1):
-        matA[i, i - 1] = D_EFF * (1 / delta_r**2 - 1 / (2 * r_i[i] * delta_r))
-        matA[i, i] = - (k + (1 / delta_t) + 2 * (D_EFF / delta_r**2))
-        matA[i, i + 1] = D_EFF * (1 / delta_r**2 + 1 / (2 * r_i[i] * delta_r))
+        matA[i, i - 1] = D_EFF * (1 / delta_r**2 - 1 / (2 * r_i[i] * delta_r))  # Coeff devant C_i-1
+        matA[i, i] = - (k + (1 / delta_t) + 2 * (D_EFF / delta_r**2))           # Coeff devant C_i
+        matA[i, i + 1] = D_EFF * (1 / delta_r**2 + 1 / (2 * r_i[i] * delta_r))  # Coeff devant C_i+1
 
     # Boucle temporelle pour résoudre C_i à chaque pas de temps
     for i in range(len(t_i)):
