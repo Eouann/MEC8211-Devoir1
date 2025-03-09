@@ -27,7 +27,7 @@ k = config.k                    # Coefficient de réaction
 # Calcul du terme source
 ########################
 def terme_source(r,t):
-    """Définition de la fon,ctopn de terme source en implicite"""
+    """Définition du terme source."""
     S = np.exp(t/Tf) * (1/Tf) * (1 - r**2/R**2) \
        - D_EFF * (2 * C_E / R**2 - 2 * np.exp(t/Tf) / R**2 + 1 / r \
            * ( 2 *C_E * r / R**2 - np.exp(t/Tf) * 2 * r/R**2))+k\
@@ -39,6 +39,7 @@ def terme_source(r,t):
 # Calcul des concentrations
 ###########################
 def Concentrations(delta_r, delta_t):
+    """Calcul des concentraions avec la méthode des différences finies."""
     # Discrétisation
     N_spatial = (R / delta_r) + 1
     N_spatial = int(N_spatial)
@@ -72,7 +73,7 @@ def Concentrations(delta_r, delta_t):
     for i in range(len(t_i)):
         t=t_i[i]
         for j in range(1, N_spatial - 1):
-            vectB[j] = - C_i[j] / delta_t + terme_source(r_i[j], t)
+            vectB[j] = C_i[j] / delta_t + terme_source(r_i[j], t)
 
         # Résolution du système matriciel A * C_new = B
         C_new = np.linalg.solve(matA, vectB)
