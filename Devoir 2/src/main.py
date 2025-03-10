@@ -139,9 +139,9 @@ plt.savefig('Devoir 2/results/erreurs_spatiales.png')
 plt.show()
 
 
-###############################################################################
+################################################################################
 # Analyse de convergence temporelle avec delta spatial fixé à 0,125 m (5 points)
-###############################################################################
+################################################################################
 list_N_temporel=[100, 200, 300, 500, 1000, 2000, 3000, 5000, 10000]
 
 delta_r = R/(20-1)      # en m
@@ -211,6 +211,7 @@ delta_r = R/(N_spatial-1)
 delta_t = Tf/(N_temporel-1)
 
 C_i_n, r_i, t_i=functions.Concentrations(delta_r, delta_t)
+
 plt.figure()
 plt.plot(r_i, C_i_n[-1,:], label='Concentration à t=4e9 s')
 plt.title("Concentration en fonction de r pour N=11")
