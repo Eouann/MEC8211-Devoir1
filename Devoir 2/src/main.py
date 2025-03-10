@@ -53,10 +53,10 @@ plt.grid()
 plt.savefig('Devoir 2/results/solution_manufacturée.png')
 plt.show()
 
-##############
-# Terme source
-##############
-# Tracé du terme source (question c)
+
+###########################
+# Terme source (question c)
+###########################
 r_values = np.linspace(0, R, 100)
 plt.figure()
 
@@ -94,8 +94,6 @@ for i in (range(len(list_N_spatiaux))):
     N_spatial = list_N_spatiaux[i]
     
     C_i_n, r_i, t_i=functions.Concentrations(delta_r, delta_t)
-    #C_spatiaux = C_i_n[-1,:]
-    #C_exacte = C_chapeau(r_i, Tf)
     C_numerique = C_i_n[:,2]
     C_exacte = C_chapeau(r_i[2], t_i)
 
@@ -157,8 +155,6 @@ for i in (range(len(list_N_temporel))):
     N_temporel = list_N_temporel[i]
     
     C_i_n, r_i, t_i=functions.Concentrations(delta_r, delta_t)
-    #C_temporels = C_i_n[:,4]
-    #C_exacte = C_chapeau(r_i[4], t_i)
     C_numerique = C_i_n[-1,:]
     C_exacte = C_chapeau(r_i, Tf)
 
