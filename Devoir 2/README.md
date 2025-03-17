@@ -1,4 +1,4 @@
-# MEC8211-Devoir1
+# MEC8211-Devoir2
 
 Répertoire du devoir 2 du cours MEC8211.
 
