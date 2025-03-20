@@ -17,7 +17,7 @@ p_f = 2 # D'après l'énoncé
 
 # Définition de la fonction u_num
 def u_num(liste_f,liste_dx,r,p_f):
-    """Fonction de calcul de l'incertitude numérique u_num grace au GCI"""
+    """Fonction de calcl de u_num, l'incertitude numérique, grace au GCI (Grid Convergence Index)"""
     p_chapeau = np.log((liste_f[2]-liste_f[1])/(liste_f[1]-liste_f[0]))/np.log(r)
     if np.abs((p_chapeau-p_f)/p_f) <= 0.1:
         GCI = 1.25/(r**p_f-1)*np.abs(liste_f[1]-liste_f[0])
