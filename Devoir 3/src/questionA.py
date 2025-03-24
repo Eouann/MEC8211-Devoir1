@@ -8,22 +8,22 @@ import numpy as np
 
 
 # Résultats de simulations effectuées avec les fichiers matlab (seed=4852)
-r = 1.6 # Choisi arbitrairement
-list_Nx = [200,320,512]
-liste_dx = [2.00e-6,1.25e-6,7.81e-7]
-liste_k = [27.9845,27.7591,27.1026] # f_r^2.h, f_r.h, f_h
+r = 2 # Choisi arbitrairement
+list_Nx = [100,200,400]
+liste_dx = [8e-6,4e-6,2e-6]
+liste_k = [49.1695,36.7123,32.2762] # f_r^2.h, f_r.h, f_h
 p_f = 2 # D'après l'énoncé
 
 
 # Définition de la fonction u_num
 def u_num(liste_f,liste_dx,r,p_f):
     """Fonction de calcl de u_num, l'incertitude numérique, grace au GCI (Grid Convergence Index)"""
-    p_chapeau = np.log((liste_f[2]-liste_f[1])/(liste_f[1]-liste_f[0]))/np.log(r)
+    p_chapeau = np.log((liste_f[0]-liste_f[1])/(liste_f[1]-liste_f[2]))/np.log(r)
     if np.abs((p_chapeau-p_f)/p_f) <= 0.1:
-        GCI = 1.25/(r**p_f-1)*np.abs(liste_f[1]-liste_f[0])
+        GCI = 1.25/(r**p_f-1)*np.abs(liste_f[1]-liste_f[2])
     else:
         p=min(max(0.5,p_chapeau),p_f)
-        GCI = 3/(r**p-1)*np.abs(liste_f[1]-liste_f[0])
+        GCI = 3/(r**p-1)*np.abs(liste_f[1]-liste_f[2])
     u_num = GCI/2
     return u_num
 
