@@ -20,20 +20,6 @@ p_f = 2 # D'après l'énoncé
 # Définition de la fonction u_num
 def u_num(liste_f,liste_dx,r,p_f):
     """Fonction de calcl de u_num, l'incertitude numérique, grace au GCI (Grid Convergence Index)"""
-    # Vérification de convergence asymptotique
-    plt.plot(liste_f, liste_dx, 'o', color='red', label='Perméabilités')
-    slope, intercept, r_value, p_value, std_err = linregress(np.log(liste_dx), np.log(liste_f))
-    y_pred =  np.exp(intercept) * liste_dx**slope
-    plt.plot(liste_dx, y_pred, '--', color='red', label=f'Ordre de convergence: {slope}')
-    plt.title('Convergence asymptotique')
-    plt.legend()
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlabel('Delta x (m)')
-    plt.ylabel('Perméabilité (um^2)')
-    plt.grid(True, which="both", ls="--")
-    plt.show()
-    # Calcul de l'incertitude numérique
     p_chapeau = np.log((liste_f[0]-liste_f[1])/(liste_f[1]-liste_f[2]))/np.log(r)
     if np.abs((p_chapeau-p_f)/p_f) <= 0.1:
         GCI = 1.25/(r**p_f-1)*np.abs(liste_f[1]-liste_f[2])
