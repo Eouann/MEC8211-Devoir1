@@ -1,5 +1,5 @@
 """
-Question A : Determination de u_num grace au GCI (Grid Convergence Index)
+Question A : Calcul de u_num grace au GCI (Grid Convergence Index)
 """
 
 
