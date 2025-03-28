@@ -32,6 +32,7 @@ plt.yscale('log')
 plt.xlabel('Delta x (m)')
 plt.ylabel('k (μm^3)')
 plt.grid(True, which="both", ls="--")
+plt.savefig('Devoir 3/results/analyse-de-convergence.png')
 plt.show()
 
 print(slope,intercept)
