@@ -8,12 +8,13 @@ import numpy as np
 
 
 # Importation des données
-S = XXX
-D = 80.6 # En µm^2, d'après l'énoncé
-u_num = 3.6801030800014876 # En µm^2, d'après la question A
-u_input = XXX
-u_D = XXX
-k = 2 # Car u_num a ete déterminé grace au GCI
+k_simu = np.array([12.8425,34.2975,42.7621,23.937,26.6145,41.8116,21.6885,50.4074,22.0472,13.1])    # Liste de k simulés pour Nx=222 et dx=0.9e-6
+S = np.median(k_simu)       # En µm^2, médiane des valeurs de k simulés
+D = 80.6                    # En µm^2, d'après l'énoncé
+u_num = 3.6801030800014876  # En µm^2, d'après la question A
+u_input = XXX               # En µm^2, d'après la question B
+u_D = XXX                   # En µm^2, d'après la question C
+k = 2                       # Car u_num a ete déterminé grace au GCI
 
 
 # Définition de la fonction E
